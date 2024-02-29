@@ -1,0 +1,157 @@
+﻿@model List<RecipeModels.Models.RecipeUpload>;
+
+
+<style>
+    /* Error page styling */
+    .errorPage {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh; /* Ensure the page fills the viewport */
+        background-color: #f0f0f0; /* Light gray background */
+        font-family: Arial, sans-serif; /* Use a clean, readable font */
+    }
+
+    .error-container {
+        text-align: center;
+        padding: 50px;
+        border-radius: 10px; /* Add a subtle border radius */
+        background-color: #fff; /* White background for content */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a slight shadow */
+        max-width: 600px; /* Set a maximum width for responsiveness */
+    }
+
+        .error-container h1 {
+            font-size: 3em; /* Increase font size for emphasis */
+            margin-bottom: 20px;
+            color: #333; /* Darker text color for better contrast */
+        }
+
+        .error-container p {
+            font-size: 1.2em; /* Increase paragraph font size for readability */
+            line-height: 1.5; /* Add some line spacing for better flow */
+            color: #666; /* Lighter text color for secondary information */
+        }
+
+        /* Add a creative touch: animate the "No Video Found" text */
+        .error-container h1 {
+            animation: shake 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+        }
+
+    @@keyframes shake {
+        0%, 100% {
+            transform: translateX(0);
+        }
+
+        25%, 75% {
+            transform: translateX(-5px);
+        }
+
+        50% {
+            transform: translateX(10px);
+        }
+    }
+
+
+
+
+
+    .img-fluid {
+        width: 5%; /* Adjust as needed */
+        height: 20px; /* Ensures aspect ratio is maintained */
+    }
+
+</style>
+<div class="row" style="margin-bottom:10px">
+    <a asp-action="Index" class="btn btn-info"> Back To Home</a>
+</div>
+<hr />
+
+@if (Model.Count != 0)
+{
+    <div class="container">
+        @foreach (var item in Model)
+        {
+            <div class="row" style="border-right:10px">
+                <div class="col-md-2 img">
+                    <img src="@item.ImageUrl" width="200px" height="150px" style="border-radius:100%" />
+                </div>
+                <div class="col-md-10">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <span class="">
+                                <img src="/Images//chef.png" class="img-fluid" />@item.ApplicationUser.Name
+                            </span>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="">
+                                <img src="/Images//cookbook.png" class="img-fluid" />@item.Title
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <span class="preview-card__code">
+                                @if (item.RecipeType == "Veg")
+                                {
+                                    <img src="/Images//veg.png" class="img-fluid" />
+                                }
+                                else
+                                {
+                                    <img src="/Images//non-veg.png" class="img-fluid" />
+                                }
+                                @item.RecipeType
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-text" style="margin-top:6px    ">
+                                @Html.Raw(item.RecipeDescription)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="btn-group" style="margin-bottom:5px">
+                                <a asp-action="Summary" asp-route-id="@item.RecipeId" class="btn btn-primary">View Recipe</a>
+                                @if (User.IsInRole(RecipeUtility.RecipeConstant.Publisher))
+                                {
+                                    @foreach (var RecipeIds in ViewBag.RecipeId)
+                                    {
+                                        if (RecipeIds == item.RecipeId)
+                                        {
+                                            <a asp-controller="RecipeUpload" asp-action="Edit" asp-route-id="@item.RecipeId" class="btn btn-success">Edit</a>
+                                            <a asp-controller="RecipeUpload" asp-action="Delete" asp-route-id="@item.RecipeId" class="btn btn-warning">Delete</a>
+                                        }
+                                        else
+                                        {
+                                            <a asp-controller="RecipeUpload" asp-action="Edit" asp-route-id="@item.RecipeId" class="btn btn-success" hidden>Edit</a>
+                                            <a asp-controller="RecipeUpload" asp-action="Delete" asp-route-id="@item.RecipeId" class="btn btn-warning" hidden>Delete</a>
+                                        }
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+        }
+    </div>
+}
+else
+{
+    <section class="errorPage">
+        <div class="error-container">
+            <h1> No Video Found </h1>
+            <p>
+                Oops! The recipe you're
+                looking for is not here.
+            </p>
+
+        </div>
+    </section>
+}
+
+
+

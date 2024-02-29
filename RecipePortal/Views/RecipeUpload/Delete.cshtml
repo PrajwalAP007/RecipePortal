@@ -1,0 +1,106 @@
+﻿@model RecipeModels.Models.RecipeUpload
+
+
+<div class="container mt-5">
+    <h1>Add a Recipe</h1>
+    <form method="post" asp-action="Delete" enctype="multipart/form-data">
+        <div class="row mb-3">
+            <input asp-for="RecipeId" hidden />
+            <input asp-for="PaymentStatus" hidden />
+            <input asp-for="PaymentIntentId" hidden />
+            <input asp-for="SessionId" hidden />
+            <input asp-for="ApplicationUserid" hidden />
+            <input asp-for="PaymentDate" hidden />
+
+            <label for="title" class="col-sm-3 col-form-label">Title:</label>
+            <div class="col-sm-9">
+                <input type="text" asp-for="@Model.Title" class="form-control" id="title" name="Title" placeholder="Enter recipe title">
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="recipeType" class="col-sm-3 col-form-label">Recipe Type:</label>
+            <div class="col-sm-9">
+                <select class="form-select" asp-for="@Model.RecipeType" id="recipeType" name="RecipeType">
+                    <option disabled>Select type</option>
+                    <option value="Veg">Veg</option>
+                    <option value="Non-Veg">Non-Veg</option>
+                </select>
+                <span asp-validation-for="RecipeType" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="recipeLanguage" class="col-sm-3 col-form-label">Recipe Language:</label>
+            <div class="col-sm-9">
+                <select class="form-select" asp-for="RecipeLanguage" id="recipeLanguage" name="RecipeLanguage">
+                    <option disabled>Select language</option>
+                    <option value="English">English</option>
+                    <option value="Hindi">Hindi</option>
+                    <option value="Other">Other</option>
+                </select>
+                <span asp-validation-for="RecipeLanguage" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="recipeDescription" class="col-sm-3 col-form-label">Recipe Description:</label>
+            <div class="col-sm-9">
+                <textarea class="form-control" id="recipeDescription" asp-for="@Model.RecipeDescription" name="RecipeDescription" rows="5"></textarea>
+                <span asp-validation-for="RecipeDescription" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="recipeMealType" class="col-sm-3 col-form-label">Meal Type:</label>
+            <div class="col-sm-9">
+                <select asp-for=@Model.RecipeMealType class="form-select" id="recipeMealType" name="RecipeMealType">
+                    <option disabled>Select meal type</option>
+                    <option value="Breakfast">Breakfast</option>
+                    <option value="Lunch">Lunch</option>
+                    <option value="Dinner">Dinner</option>
+
+                </select>
+                <span asp-validation-for="RecipeMealType" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label class="col-sm-3 col-form-label"> Recipe Image </label>
+            <input type="file" asp-for=ImageUrl class=" form-control" />
+            <span asp-validation-for="ImageUrl" class="text-danger"></span>
+        </div>
+        <div class="row mb-3">
+            <label asp-for="RecipeVideos" class="col-sm-3 col-form-label"> </label>
+            <input type="file" asp-for=ImageUrl class=" form-control" />
+            <span asp-validation-for="RecipeVideos" class="text-danger"></span>
+        </div>
+        <div class="row mb-3">
+            <div class="col-4 mt-3">
+
+                <button type="submit" class="btn btn-success btn-lg form-control"><i class="bi bi-check-circle"></i> Delete</button>
+            </div>
+            <div class="col-4 mt-3">
+                <a asp-controller="Home" asp-action="Index" class="btn btn-secondary btn-lg form-control"><i class="bi bi-arrow-return-left"></i> Go Back</a>
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+@section Scripts {
+    @{
+        <script>
+            tinymce.init({
+                selector: 'textarea',
+                plugins: 'ai tinycomments mentions anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss',
+                toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+                tinycomments_mode: 'embedded',
+                tinycomments_author: 'Author name',
+                mergetags_list: [
+                    { value: 'First.Name', title: 'First Name' },
+                    { value: 'Email', title: 'Email' },
+                ],
+                ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
+            });
+        </script>
+        <partial name="_ValidationScriptsPartial" />
+    }
+} 

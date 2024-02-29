@@ -1,0 +1,50 @@
+﻿@model RecipeModels.Models.RecipeReview
+
+
+<style>
+    /* Custom styling for form */
+    .card {
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .form-select-icon i {
+        margin-right: 10px;
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-body">
+        
+            <h2 class="card-title text-center mb-4">Recipe Review <i class="bi bi-star-fill text-warning ms-2"></i></h2>
+            <form id="review-form" asp-action="Create" method="post">
+                <input asp-for="RecipeiD" value="@ViewBag.RecipeRatingId" hidden />
+                <div class="row g-3">
+                    <div class="col-12 mb-3">
+                        <label asp-for="Rating" class="form-label">Your Rating</label>
+                        <div class="form-select-icon">
+                            <select asp-for="Rating" class="form-select" id="rating" name="Rating" required>
+                                <option value="">Select Rating</option>
+                                <option value="1">⭐</option>
+                                <option value="2">⭐⭐</option>
+                                <option value="3">⭐⭐⭐</option>
+                                <option value="4">⭐⭐⭐⭐</option>
+                                <option value="5">⭐⭐⭐⭐⭐</option>
+                            </select>
+                            <div class="invalid-feedback">Please select a rating.</div>
+                        </div>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <label asp-for="Review" class="form-label">Write your review here...</label>
+                        <textarea asp-for="Review" class="form-control" rows="5" required></textarea>
+                        <div class="invalid-feedback">Please enter a Review.</div>
+                    </div>
+                    <div class="col-12 text-center mb-3">
+                        <button type="submit" class="btn btn-lg btn-outline-warning" id="submit-btn">Submit Review</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

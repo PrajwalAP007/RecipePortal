@@ -1,0 +1,171 @@
+﻿@model List<RecipeModels.Models.UserRecords>
+ <style>
+.video-list-item {
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.video-list-item:hover {
+    background-color: #f8f9fa;
+}
+
+.video-player {
+    padding: 0;
+}
+
+.video-player video {
+    width: 100%;
+    height: auto;
+}
+
+.video-player .card-body {
+    padding: 10px;
+}
+
+@@media (max-width: 767.98px) {
+    .video-list-item {
+        margin-bottom: 10px;
+    }
+
+    .video-player {
+        margin-top: 20px;
+    }
+}
+
+
+
+/*       // code for No video found */
+
+    .page_404 {
+        padding: 40px 0;
+        background: #fff;
+        font-family: 'Arvo', serif;
+    }
+
+    .page_404 img {
+        width: 100%;
+    }
+
+    .four_zero_four_bg {
+        background-image: url(https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif);
+ 
+        height: 400px;
+        background-position: center;
+    }
+
+
+        .four_zero_four_bg h1 {
+            font-size: 80px;
+        }
+
+        .four_zero_four_bg h3 {
+            font-size: 80px;
+        }
+
+    .link_404 {
+        color: #fff !important;
+        padding: 10px 20px;
+        background: #39ac31;
+        margin: 20px 0;
+        display: inline-block;
+    }
+
+    .contant_box_404 {
+        margin-top: -50px;
+    }
+
+
+    </style>
+   
+@if (Model.Count > 0)
+{
+    <div class="container">
+        <div class="row">
+            <!-- Video List -->
+            <div class="col-md-3">
+                <div class="video-list">
+                    @foreach (var video in Model)
+                    {
+                        <div class="video-list-item card mb-2" data-video-src="@video.recipeUpload.RecipeVideos">
+                            <div class="card-body">
+                                <h5 class="card-title">@video.recipeUpload.Title</h5>
+                                <a asp-controller="RecipeReview" asp-action="Create" asp-route-id="@video.recipeUpload.RecipeId" class="btn btn-warning">Review</a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Video Player -->
+            <div class="col-md-9">
+                <div class="video-player card">
+                    <video id="main-video" class="card-img-top" controls controlsList="nodownload" width="100%">
+                        <source id="video-source" src="" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+               
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+}
+
+
+
+else
+{
+    <section class="page_404">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 ">
+                    <div class="col-sm-10 col-sm-offset-1  text-center">
+                        <h1 class="text-center " style="margin-bottom:20px; font-size:70px">No Videos Founds !!</h1>
+                        <div class="four_zero_four_bg">
+                         
+
+
+                        </div>
+
+                        <div class="contant_box_404">
+                            <h3 class="h2">
+                                Look like you don't have any video in bucket
+                            </h3>
+
+                            <p> <i class="bi bi-emoji-frown-fill"></i> you dont purchase any video yet !</p>
+
+                            <a asp-controller="Home" asp-action="Index" class="link_404">Go to Home</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+@section Scripts{
+    <script>
+        // JavaScript to handle video playback
+        document.addEventListener("DOMContentLoaded", function () {
+            const videoListItems = document.querySelectorAll(".video-list-item");
+            const mainVideo = document.getElementById("main-video");
+            const videoSource = document.getElementById("video-source");
+
+            // Function to handle when a video list item is clicked
+            function handleVideoListItemClick(event) {
+                const videoSrc = event.currentTarget.getAttribute("data-video-src");
+                videoSource.setAttribute("src", videoSrc);
+                mainVideo.load(); // Reload the video player with the new source
+                mainVideo.play(); // Start playing the new video
+            }
+
+            // Add click event listeners to all video list items
+            videoListItems.forEach(function (item) {
+                item.addEventListener("click", handleVideoListItemClick);
+            });
+        });
+    </script>
+}

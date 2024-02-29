@@ -1,0 +1,156 @@
+﻿
+@model List<RecipeModels.Models.RecipeUpload>;
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+ <style>
+    .filter-label {
+        display: flex;
+        align-items: center;
+    }
+
+        .filter-label i {
+            margin-right: 5px;
+        }
+
+    .filter-select {
+        border-radius: 5px;
+        border-color: #ced4da;
+    }
+
+    .img-fluid {
+        width: 5%; /* Adjust as needed */
+        height: 20px; /* Ensures aspect ratio is maintained */
+    }
+
+</style>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <form method="get" action="@Url.Action("FilterByCategory", "Home")" class="form-inline">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="filter-label" for="category"><i class="fas fa-filter"></i> Category:</label>
+                            <select class="form-control filter-select" name="category" id="category">
+                                <option selected disabled hidden>Select Option</option>
+                                <option value="Veg">Veg</option>
+                                <option value="Non-Veg">Non Veg</option>
+                                <!-- Add other category options here -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="filter-label" for="mealType"><i class="fas fa-filter"></i> Meal Type:</label>
+                            <select class="form-control filter-select" name="mealType" id="mealType">
+                                <option selected disabled hidden>Select Option</option>
+                                <option value="Breakfast">Breakfast</option>
+                                <option value="Lunch">Lunch</option>
+                                <option value="Dinner">Dinner</option>
+                                <!-- Add other meal type options here -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="filter-label" for="recipeLanguage"><i class="fas fa-filter"></i> Recipe Language:</label>
+                            <select class="form-control filter-select" name="recipeLanguage" id="recipeLanguage">
+                                <option selected disabled hidden>Select Option</option>
+                                <option value="English">English</option>
+                                <option value="Hindi">Hindi</option>
+                                <option value="Other">Others</option>
+                                <!-- Add other language options here -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success " style="margin-top:23px">Apply Filters</button>
+                        </div>
+                    </div>
+                  
+
+                </div>
+         
+
+
+
+
+            </form>
+        </div>
+    </div>
+    <hr />
+
+    
+    @foreach (var item in Model)
+    {
+        <div class="row" style="border-right:10px">
+            <div class="col-md-2 img">
+                <img src="@item.ImageUrl" width="200px" height="150px" style="border-radius:100%" />
+            </div>
+            <div class="col-md-10">
+                <div class="row">
+                    <div class="col-md-4">
+                        <span class="">
+                            <img src="Images/chef.png" class="img-fluid" />@item.ApplicationUser.Name
+                        </span>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="">
+                            <img src="Images/cookbook.png" class="img-fluid" />@item.Title
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <span class="preview-card__code">
+                            @if (item.RecipeType == "Veg")
+                            {
+                                <img src="Images/veg.png" class="img-fluid" />
+                            }
+                            else
+                            {
+                                <img src="Images/non-veg.png" class="img-fluid" />
+                            }
+                            @item.RecipeType
+                        </span>
+                    </div>
+                </div>
+         
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card-text" style="margin-top:6px    ">
+                            @Html.Raw(item.RecipeDescription)
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="btn-group" style="margin-bottom:5px">
+                            <a asp-action="Summary" asp-route-id="@item.RecipeId" class="btn btn-primary">View Recipe</a>
+                            @if (User.IsInRole(RecipeUtility.RecipeConstant.Publisher))
+                            {
+                                @foreach (var RecipeIds in ViewBag.RecipeId)
+                                {
+                                    if (RecipeIds == item.RecipeId)
+                                    {
+                                        <a asp-controller="RecipeUpload" asp-action="Edit" asp-route-id="@item.RecipeId" class="btn btn-success">Edit</a>
+                                        <a asp-controller="RecipeUpload" asp-action="Delete" asp-route-id="@item.RecipeId" class="btn btn-warning">Delete</a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-controller="RecipeUpload" asp-action="Edit" asp-route-id="@item.RecipeId" class="btn btn-success" hidden>Edit</a>
+                                        <a asp-controller="RecipeUpload" asp-action="Delete" asp-route-id="@item.RecipeId" class="btn btn-warning" hidden>Delete</a>
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+    }
+</div> 
+
+ 
